@@ -74,9 +74,9 @@ export async function runAction(opts: {
   const actionFile = readFileSync(`${actionPath}/action.yml`, 'utf8');
   const action = parse(actionFile);
 
-  if (!(action && action.name && action.runs && action.runs.main)) {
-    throw new Error('Malformed action.yml found');
-  }
+  // if (!(action && action.name && action.runs && action.runs.main && action.runs.using !== 'node12')) {
+  //   throw new Error('Malformed action.yml found');
+  // }
 
   core.endGroup();
 
@@ -85,7 +85,8 @@ export async function runAction(opts: {
   core.endGroup();
 
   core.info(`Starting private action ${action.name}`);
-  await exec.exec(`node ${join(actionPath, action.runs.main)}`);
+  //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
+  await exec.exec(`bash ${join(actionPath, action.runs.run)}`);
 
   core.info(`Cleaning up action`);
   sync(opts.workDirectory);
