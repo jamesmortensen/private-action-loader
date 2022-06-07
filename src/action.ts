@@ -79,9 +79,11 @@ export async function runAction(opts: {
   //   throw new Error('Malformed action.yml found');
   // }
   core.info('action = ' + action);
-  core.info('actionFile = ' + actionFile) ;
+  core.info('actionFile = ' + actionFile);
+  core.info('actionPath = ' + actionPath);
   console.log(action);
   console.log(actionFile);
+  console.log('actionPath = ' + actionPath);
   core.endGroup();
 
   core.startGroup('Input Validation');
