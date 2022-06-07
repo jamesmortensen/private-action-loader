@@ -78,8 +78,8 @@ export async function runAction(opts: {
   if (!(action && action.name && action.runs && action.runs.main)) {
     throw new Error('Malformed action.yml found');
   }
-  core.info(action);
-  core.info(actionFile);
+  core.info('action = ' + action);
+  core.info('actionFile = ' + actionFile) ;
   console.log(action);
   console.log(actionFile);
   core.endGroup();
