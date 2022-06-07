@@ -665,6 +665,7 @@ var fs_1 = __webpack_require__(747);
 var path_1 = __webpack_require__(622);
 var rimraf_1 = __webpack_require__(953);
 function setInputs(action) {
+    core.info(action);
     if (!action.inputs) {
         core.info('No inputs defined in action.');
         return;
@@ -726,14 +727,20 @@ function runAction(opts) {
                     core.info("Reading " + actionPath);
                     actionFile = fs_1.readFileSync(actionPath + "/action.yml", 'utf8');
                     action = yaml_1.parse(actionFile);
-                    // if (!(action && action.name && action.runs && action.runs.main && action.runs.using !== 'node12')) {
-                    //   throw new Error('Malformed action.yml found');
-                    // }
+                    if (!(action && action.name && action.runs && action.runs.main)) {
+                        throw new Error('Malformed action.yml found');
+                    }
+                    core.info('action = ' + action);
+                    core.info('actionFile = ' + actionFile);
+                    console.log(action);
+                    console.log(actionFile);
                     core.endGroup();
                     core.startGroup('Input Validation');
                     setInputs(action);
                     core.endGroup();
                     core.info("Starting private action " + action.name);
+                    core.info("Path to execute is: node " + path_1.join(actionPath, action.runs.run));
+                    console.info("Path to execute is: node " + path_1.join(actionPath, action.runs.run));
                     //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
                     return [4 /*yield*/, exec.exec("bash " + path_1.join(actionPath, action.runs.run))];
                 case 5:
