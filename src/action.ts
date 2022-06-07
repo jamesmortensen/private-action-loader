@@ -75,9 +75,9 @@ export async function runAction(opts: {
   const actionFile = readFileSync(`${actionPath}/action.yml`, 'utf8');
   const action = parse(actionFile);
 
-  if (!(action && action.name && action.runs && action.runs.main)) {
-    throw new Error('Malformed action.yml found');
-  }
+  // if (!(action && action.name && action.runs && action.runs.main)) {
+  //   throw new Error('Malformed action.yml found');
+  // }
   core.info('action = ' + action);
   core.info('actionFile = ' + actionFile) ;
   console.log(action);

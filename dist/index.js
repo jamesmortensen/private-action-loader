@@ -727,9 +727,9 @@ function runAction(opts) {
                     core.info("Reading " + actionPath);
                     actionFile = fs_1.readFileSync(actionPath + "/action.yml", 'utf8');
                     action = yaml_1.parse(actionFile);
-                    if (!(action && action.name && action.runs && action.runs.main)) {
-                        throw new Error('Malformed action.yml found');
-                    }
+                    // if (!(action && action.name && action.runs && action.runs.main)) {
+                    //   throw new Error('Malformed action.yml found');
+                    // }
                     core.info('action = ' + action);
                     core.info('actionFile = ' + actionFile);
                     console.log(action);
