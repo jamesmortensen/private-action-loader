@@ -746,16 +746,19 @@ function runAction(opts) {
                     core.endGroup();
                     shell = 'bash';
                     commands = [
+                        //`#!${shell}`, 'set -eu;', core.getInput('run', { required: false }),
                         "#!" + shell,
-                        'set -eu;', core.getInput('run', { required: false }),
+                        'set -eu;', action.runs.steps[0].run,
                     ].join('\n');
                     fs_2.default.writeFileSync(path_1.join(actionPath, 'run-shell-commands.sh'), commands);
                     core.info("Starting private action " + action.name);
-                    core.info("Path to execute is: node " + path_1.join(actionPath, action.runs.run));
-                    console.info("Path to execute is: node " + path_1.join(actionPath, action.runs.run));
+                    //core.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
+                    //console.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
                     //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
                     return [4 /*yield*/, exec.exec("bash " + path_1.join(actionPath, 'run-shell-commands.sh'))];
                 case 5:
+                    //core.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
+                    //console.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
                     //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
                     _b.sent();
                     core.info("Cleaning up action");

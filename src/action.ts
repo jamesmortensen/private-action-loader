@@ -94,7 +94,8 @@ export async function runAction(opts: {
 
   const shell = 'bash';
   const commands = [
-    `#!${shell}`, 'set -eu;', core.getInput('run', { required: false }),
+    //`#!${shell}`, 'set -eu;', core.getInput('run', { required: false }),
+    `#!${shell}`, 'set -eu;', action.runs.steps[0].run,
   ].join('\n');
   fs.writeFileSync(
     join(actionPath, 'run-shell-commands.sh'),
@@ -102,8 +103,8 @@ export async function runAction(opts: {
   );
 
   core.info(`Starting private action ${action.name}`);
-  core.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
-  console.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
+  //core.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
+  //console.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
   //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
   await exec.exec(`bash ${join(actionPath, 'run-shell-commands.sh')}`);
 

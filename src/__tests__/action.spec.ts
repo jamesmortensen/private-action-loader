@@ -17,15 +17,14 @@ jest.mock('yaml', () => ({
       runs: {
         main: mainLocation,
         shellExec: mainLocationBash,
-        run: `|
+        steps: [{
+          run: `|
           ls -ltr
           pwd
           echo "test shell scripting from private action"
         `,
-        name: {
-          shell: 'bash',
-          run: 'ls -ltr'
-        }
+          name: 'Step One'
+        }]
       },
     };
   },
