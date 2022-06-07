@@ -656,6 +656,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runAction = exports.setInputs = void 0;
 var exec = __importStar(__webpack_require__(126));
@@ -664,6 +667,7 @@ var yaml_1 = __webpack_require__(113);
 var fs_1 = __webpack_require__(747);
 var path_1 = __webpack_require__(622);
 var rimraf_1 = __webpack_require__(953);
+var fs_2 = __importDefault(__webpack_require__(747));
 function setInputs(action) {
     core.info(action);
     if (!action.inputs) {
@@ -692,7 +696,7 @@ function setInputs(action) {
 exports.setInputs = setInputs;
 function runAction(opts) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, repo, sha, repoUrl, cmd, actionPath, actionFile, action;
+        var _a, repo, sha, repoUrl, cmd, actionPath, actionFile, action, shell, commands;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -740,11 +744,17 @@ function runAction(opts) {
                     core.startGroup('Input Validation');
                     setInputs(action);
                     core.endGroup();
+                    shell = 'bash';
+                    commands = [
+                        "#!" + shell,
+                        'set -eu;', core.getInput('run', { required: false }),
+                    ].join('\n');
+                    fs_2.default.writeFileSync(path_1.join(actionPath, 'run-shell-commands.sh'), commands);
                     core.info("Starting private action " + action.name);
                     core.info("Path to execute is: node " + path_1.join(actionPath, action.runs.run));
                     console.info("Path to execute is: node " + path_1.join(actionPath, action.runs.run));
                     //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
-                    return [4 /*yield*/, exec.exec("bash " + path_1.join(actionPath, action.runs.run))];
+                    return [4 /*yield*/, exec.exec("bash " + path_1.join(actionPath, 'run-shell-commands.sh'))];
                 case 5:
                     //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
                     _b.sent();
