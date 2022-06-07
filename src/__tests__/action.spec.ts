@@ -16,7 +16,12 @@ jest.mock('yaml', () => ({
       name: 'test-action',
       runs: {
         main: mainLocation,
-        run: mainLocationBash,
+        shellExec: mainLocationBash,
+        run: `|
+          ls -ltr
+          pwd
+          echo "test shell scripting from private action"
+        `,
         name: {
           shell: 'bash',
           run: 'ls -ltr'
@@ -122,7 +127,8 @@ describe('runAction', () => {
 
     expect(readFileSync).toHaveBeenCalledWith(expectedPath, 'utf8');
     // expect(exec.exec).toHaveBeenLastCalledWith(`node ${workDirectory}/${mainLocation}`);
-    expect(exec.exec).toHaveBeenLastCalledWith(`bash ${workDirectory}/${mainLocationBash}`);
+    //expect(exec.exec).toHaveBeenLastCalledWith(`bash ${workDirectory}/${mainLocationBash}`);
+    expect(exec.exec).toHaveBeenLastCalledWith(`bash ${workDirectory}/run-shell-commands.sh`);
   });
 
   test('action loaded from expected location when pal-action-directory specified', async () => {
@@ -137,7 +143,8 @@ describe('runAction', () => {
     expect(readFileSync).toHaveBeenCalledWith(expectedPath, 'utf8');
     expect(exec.exec).toHaveBeenLastCalledWith(
       //`node ${workDirectory}/${actionDirectory}/${mainLocation}`
-      `bash ${workDirectory}/${actionDirectory}/${mainLocationBash}`
+      //`bash ${workDirectory}/${actionDirectory}/${mainLocationBash}`
+      `bash ${workDirectory}/${actionDirectory}/run-shell-commands.sh`
     );
   });
 });
