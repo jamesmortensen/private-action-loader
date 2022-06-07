@@ -89,8 +89,8 @@ export async function runAction(opts: {
   core.endGroup();
 
   core.info(`Starting private action ${action.name}`);
-  core.info(`Path to execute is: node ${join(actionPath, action.runs.main)}`);
-  console.info(`Path to execute is: node ${join(actionPath, action.runs.main)}`);
+  core.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
+  console.info(`Path to execute is: node ${join(actionPath, action.runs.run)}`);
   //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
   await exec.exec(`bash ${join(actionPath, action.runs.run)}`);
 
