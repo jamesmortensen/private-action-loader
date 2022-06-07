@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { runAction, setInputs } from '../action';
 
 const mainLocation = `test-main/index.js`;
+const mainLocationBash = `test-main/test.sh`;
 
 jest.mock('@actions/core');
 jest.mock('@actions/exec');
@@ -15,6 +16,11 @@ jest.mock('yaml', () => ({
       name: 'test-action',
       runs: {
         main: mainLocation,
+        run: mainLocationBash,
+        name: {
+          shell: 'bash',
+          run: 'ls -ltr'
+        }
       },
     };
   },
@@ -115,7 +121,8 @@ describe('runAction', () => {
     });
 
     expect(readFileSync).toHaveBeenCalledWith(expectedPath, 'utf8');
-    expect(exec.exec).toHaveBeenLastCalledWith(`node ${workDirectory}/${mainLocation}`);
+    // expect(exec.exec).toHaveBeenLastCalledWith(`node ${workDirectory}/${mainLocation}`);
+    expect(exec.exec).toHaveBeenLastCalledWith(`bash ${workDirectory}/${mainLocationBash}`);
   });
 
   test('action loaded from expected location when pal-action-directory specified', async () => {
@@ -129,7 +136,8 @@ describe('runAction', () => {
 
     expect(readFileSync).toHaveBeenCalledWith(expectedPath, 'utf8');
     expect(exec.exec).toHaveBeenLastCalledWith(
-      `node ${workDirectory}/${actionDirectory}/${mainLocation}`
+      //`node ${workDirectory}/${actionDirectory}/${mainLocation}`
+      `bash ${workDirectory}/${actionDirectory}/${mainLocationBash}`
     );
   });
 });

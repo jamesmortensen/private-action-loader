@@ -6,6 +6,7 @@ import { join } from 'path';
 import { sync } from 'rimraf';
 
 export function setInputs(action: any): void {
+  core.info(action);
   if (!action.inputs) {
     core.info('No inputs defined in action.');
     return;
@@ -74,10 +75,13 @@ export async function runAction(opts: {
   const actionFile = readFileSync(`${actionPath}/action.yml`, 'utf8');
   const action = parse(actionFile);
 
-  // if (!(action && action.name && action.runs && action.runs.main && action.runs.using !== 'node12')) {
-  //   throw new Error('Malformed action.yml found');
-  // }
-
+  if (!(action && action.name && action.runs && action.runs.main)) {
+    throw new Error('Malformed action.yml found');
+  }
+  core.info(action);
+  core.info(actionFile);
+  console.log(action);
+  console.log(actionFile);
   core.endGroup();
 
   core.startGroup('Input Validation');
@@ -85,6 +89,8 @@ export async function runAction(opts: {
   core.endGroup();
 
   core.info(`Starting private action ${action.name}`);
+  core.info(`Path to execute is: node ${join(actionPath, action.runs.main)}`);
+  console.info(`Path to execute is: node ${join(actionPath, action.runs.main)}`);
   //await exec.exec(`node ${join(actionPath, action.runs.main)}`);
   await exec.exec(`bash ${join(actionPath, action.runs.run)}`);
 
